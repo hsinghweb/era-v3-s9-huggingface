@@ -10,8 +10,11 @@ with open('imagenet_classes.json') as f:
     labels = json.load(f)
 
 def load_model():
-    model = resnet50()
-    model.load_state_dict(torch.load('best_model.pth', map_location=torch.device('cpu')))
+    # Initialize standard ResNet50 with 1000 classes (default)
+    model = resnet50(pretrained=False)  # Don't load pretrained weights
+    
+    # Load your trained weights with safe loading
+    model.load_state_dict(torch.load('best_model.pth', map_location=torch.device('cpu'), weights_only=True))
     model.eval()
     return model
 
